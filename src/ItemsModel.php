@@ -16,7 +16,10 @@ class ItemsModel
     public function getAllItems()
     {
         // Fetch the data providing the parameters in the SQL statement
-        $query = $this->db->prepare('SELECT * FROM `trainers`');
+        $query = $this->db->prepare('SELECT `trainers`.`id`,`trainers`.`name`, `trainers`.`image`,`trainers`.`price`, `manufacturer`.`name` AS `manufacturer`
+                                        FROM `trainers`
+                                        INNER JOIN `manufacturer`
+                                        ON `trainers`.`manufacturer_id` = `manufacturer`.`id`');
         $query->execute();
         $items = $query->fetchAll();
 
@@ -28,7 +31,7 @@ class ItemsModel
                 $item['name'], 
                 $item['price'],
                 $item['image'],
-                $item['manufacturer_id']
+                $item['manufacturer']
             );
         }
         // Return the array of Item objects

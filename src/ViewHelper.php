@@ -9,7 +9,7 @@ class ItemViewHelper
     {
         $output = '<div>';
         $output .= "<h1>$item->name</h1>";
-        $output .= "<p>$item->manufacturer</p>";
+        $output .= "<p>$item->manufacturer_id</p>";
         $output .= "<img src='$item->image' />";
         $output .= "<p>£$item->price</p>";
         $output .= '</div>';
@@ -19,15 +19,15 @@ class ItemViewHelper
 
     public static function displayAllItems(array $items): string
     {
+        // Create an variable with an empty string
         $output = '';
-        // Because this method is dealing with multiple products, we need to loop through
-        // them to generate each products HTML one at a time
+        // Loop through each product to generate each products HTML one at a time
         foreach ($items as $item) {
-            // Here we 'glue' each product's HTML into an $output variable
-            // to build up all of the HTML for every product into a single variable
-            $output .= '<div>';
+            // Use '.=' to append the variable, with all of the data from eacgh product, to build up into a single variable 
+            $output .= '<div class = "itemdisplay">';
             $output .= "<h1>$item->name</h1>";
             $output .= "<img src='$item->image' />";
+            $output .= "<p>$item->manufacturer</p>";
             $output .= "<p>£$item->price</p>";
             $output .= '</div>';
         }
