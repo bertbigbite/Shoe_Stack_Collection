@@ -20,7 +20,6 @@ readonly class Item
     ) {
         $this->id = $id;
         $this->name = $name;
-        $this->description = $description;
         $this->price = $price;
         $this->image = $image;
         $this->manufacturer_id = $manufacturer_id;
