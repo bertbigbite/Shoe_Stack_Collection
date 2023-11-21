@@ -5,11 +5,11 @@ require_once 'src/Trainers.php';
 class TrainerViewHelper
 {
     
-    public static function displaySingleItem (Item $item): string
+    public static function displaySingleItem (Trainer $item): string
     {
         $output = '<div>';
         $output .= "<h1>$item->name</h1>";
-        $output .= "<p>$item->manufacturer_id</p>";
+        $output .= "<p>$item->manufacturer</p>";
         $output .= "<img src='$item->image' />";
         $output .= "<p>£$item->price</p>";
         $output .= '</div>';
@@ -23,7 +23,7 @@ class TrainerViewHelper
         $output = '';
         // Loop through each product to generate each products HTML one at a time
         foreach ($items as $item) {
-            // Use '.=' to append the variable, with all of the data from eacgh product, to build up into a single variable 
+            // Use '.=' to append the variable, with all of the data from each product, to build up into a single variable 
             $output .= '<div class = "itemdisplay">';
             $output .= "<h1>$item->name</h1>";
             $output .= "<img src='$item->image' />";
