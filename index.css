@@ -1,0 +1,25 @@
+
+body{
+    width: 100vw;
+}
+.placeholder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:20px;
+    justify-content: center;
+    
+}
+.itemdisplay {
+    width:200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    
+}
+
+.itemdisplay img {
+    width: 200px;
+}
