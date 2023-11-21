@@ -1,8 +1,8 @@
 <?php
 
-require_once 'src/Items.php';
+require_once 'src/Trainers.php';
 
-class ItemViewHelper
+class TrainerViewHelper
 {
     
     public static function displaySingleItem (Item $item): string

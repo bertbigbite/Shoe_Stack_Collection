@@ -1,7 +1,7 @@
 <?php
 
 
-readonly class Item
+readonly class Trainer
 {
     // Creating properties
     public int $id;

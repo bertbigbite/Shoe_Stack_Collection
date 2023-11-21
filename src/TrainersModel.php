@@ -1,9 +1,9 @@
 <?php
 
-require_once 'src/Items.php';
+require_once 'src/Trainers.php';
 
 
-class ItemsModel
+class TrainersModel
 {
     public PDO $db;
     
@@ -26,7 +26,7 @@ class ItemsModel
         $itemObject = []; // Create a new empty array to contain the objects
         // For each item in the result of the fetch, create an Item object and put it into an array
         foreach ($items as $item) {
-            $itemObject [] = new Item(
+            $itemObject [] = new Trainer(
                 $item['id'], 
                 $item['name'], 
                 $item['price'],
@@ -38,4 +38,6 @@ class ItemsModel
         return $itemObject;
     }
 
+
+    
 }
