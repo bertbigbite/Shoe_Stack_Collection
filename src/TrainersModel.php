@@ -36,8 +36,8 @@ class TrainersModel
         }
         // Return the array of Item objects
         return $itemObject;
-    }
+    }   
 
-
-    
 }
+
+
