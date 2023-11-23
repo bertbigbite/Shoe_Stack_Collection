@@ -19,7 +19,27 @@ if(
     $name_valid = true;
     $image_valid = true;
     $price_valid = true;
+   
+  
+    if (($name_valid) && ($image_valid) && ($price_valid)) {
+
+      $db = new PDO('mysql:host=db; dbname=Shoe_Stack', 'root', 'password');
+      $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+         
+      $query = $db->prepare(
+        'INSERT INTO `trainers`
+            (`name`, `image`, `price`, `manufacturer_id`)
+            VALUES (:trainer_name, :trainer_image, :trainer_price, :manufacturer_id);');
     
+      $success = $query->execute([
+        ':trainer_name' => $name,
+        ':trainer_image' => $image,
+        ':trainer_price' => $price,
+        ':manufacturer_id' => $manufacturer_id,
+      ]);
+      
+
+      }   
 
     if(empty($_POST['name']) || (strlen($_POST['name']) > 100))
         $name_message = "* Name required. <br> * Must not be more than 100 characters";
@@ -27,7 +47,7 @@ if(
     
     if(empty($_POST['image']) || (strlen($_POST['image']) > 500))
         $image_message = "* Image URL required. <br> * Must not be more than 500 characters";
-        $image_valid = false;   
+        $image_valid = false;  
     
     if(empty($_POST['price']))
         $price_message = "* Price required";
@@ -37,26 +57,6 @@ if(
         $price_message2 = "* Must not be negative number";
         $price_valid = false;
 
-
-    if ($name_valid || $image_valid || $price_valid ) {
-
-    // Validating the name field
-    $db = new PDO('mysql:host=db; dbname=Shoe_Stack', 'root', 'password');
-    $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-
-    $query = $db->prepare(
-        'INSERT INTO `trainers`
-            (`name`, `image`, `price`, `manufacturer_id`)
-            VALUES (:trainer_name, :trainer_image, :trainer_price, :manufacturer_id);');
-    
-    $success = $query->execute([
-        ':trainer_name' => $name,
-        ':trainer_image' => $image,
-        ':trainer_price' => $price,
-        ':manufacturer_id' => $manufacturer_id,
-    ]);
-    
-}   
 }
 
     ?>
@@ -155,6 +155,8 @@ if(
   <div class="mt-6 flex items-center justify-end gap-x-6">
     <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
     <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Add</button>
+    
+
   </div>
 </form>
 </div>
