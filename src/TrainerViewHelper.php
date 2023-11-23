@@ -29,9 +29,14 @@ class TrainerViewHelper
             $output .= "<img src='$item->image' />";
             $output .= "<p>$item->manufacturer</p>";
             $output .= "<p>£$item->price</p>";
+            $output .= "<p>£$item->price</p>";
+
             $output .= '</div>';
         }
 
         return $output;
     }
+
+    
+
 }

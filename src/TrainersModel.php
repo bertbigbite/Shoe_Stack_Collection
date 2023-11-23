@@ -20,6 +20,7 @@ class TrainersModel
                                         FROM `trainers`
                                         INNER JOIN `manufacturer`
                                         ON `trainers`.`manufacturer_id` = `manufacturer`.`id`');
+                                        
         $query->execute();
         $items = $query->fetchAll();
 
@@ -36,8 +37,9 @@ class TrainersModel
         }
         // Return the array of Item objects
         return $itemObject;
-    }
-
-
+    } 
     
+
 }
+
+

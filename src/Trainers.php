@@ -17,6 +17,7 @@ readonly class Trainer
         float $price, 
         string $image, 
         string $manufacturer
+
     ) {
         $this->id = $id;
         $this->name = $name;

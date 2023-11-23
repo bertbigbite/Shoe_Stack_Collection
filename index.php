@@ -3,6 +3,7 @@
 require_once 'src/TrainersModel.php';
 require_once 'src/TrainerViewHelper.php';
 
+
 $db = new PDO('mysql:host=db; dbname=Shoe_Stack', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
@@ -22,11 +23,20 @@ $items = $itemsModel->getAllItems();
     <link rel="stylesheet" type="text/css" href="index.css">
     <title>Shoe Stack</title>
 </head>
+<header> <!-- Header Div -->
+        <div class="navigation">
+            <span ><img src="images/Shoe_Stack.png"></img></span>
+            <nav class="links">
+                <a href="index.php" class="second" alt="About">Trainers</a>
+                <a href="AddTrainers.php" class="third" alt="Portfolio">Add Trainers</a>
+                <a href="#" id="contactModal" class="fourth" alt="Contact">Search</a>
+            </nav>
+        </div>
+    </header>
 <body>
 
 <div class = "placeholder">
 <?php 
-
 
 echo TrainerViewHelper::displayAllItems($items);
 
