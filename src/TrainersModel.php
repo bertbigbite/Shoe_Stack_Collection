@@ -16,30 +16,73 @@ class TrainersModel
     public function getAllItems()
     {
         // Fetch the data providing the parameters in the SQL statement
-        $query = $this->db->prepare('SELECT `trainers`.`id`,`trainers`.`name`, `trainers`.`image`,`trainers`.`price`, `manufacturer`.`name` AS `manufacturer`
+        $query = $this->db->prepare('SELECT `trainers`.`id`,`trainers`.`name`, `trainers`.`image`,`trainers`.`price`,`trainers`.`deleted`,`trainers`.`description`, `manufacturer`.`name` AS `manufacturer`, `colour`.`name` AS `colour`
                                         FROM `trainers`
                                         INNER JOIN `manufacturer`
-                                        ON `trainers`.`manufacturer_id` = `manufacturer`.`id`');
+                                        ON `trainers`.`manufacturer_id` = `manufacturer`.`id`
+                                        INNER JOIN `colour`
+                                        ON `trainers`.`colour_id` = `colour`.`id`');
                                         
         $query->execute();
         $items = $query->fetchAll();
 
-        $itemObject = []; // Create a new empty array to contain the objects
-        // For each item in the result of the fetch, create an Item object and put it into an array
+        $itemObject = []; 
         foreach ($items as $item) {
             $itemObject [] = new Trainer(
-                $item['id'], 
-                $item['name'], 
+                $item['id'],
+                $item['name'],
                 $item['price'],
                 $item['image'],
-                $item['manufacturer']
+                $item['manufacturer'],
+                $item['deleted'],
+                $item['description'],
+                $item['colour'],
             );
         }
-        // Return the array of Item objects
+
         return $itemObject;
     } 
     
 
+    public function getSingleItems($id)
+    {
+
+        $query = $this->db->prepare('SELECT `trainers`.`id`,`trainers`.`name`, `trainers`.`image`,`trainers`.`price`,`trainers`.`deleted`,`trainers`.`description`, `manufacturer`.`name` AS `manufacturer`, `colour`.`name` AS `colour`
+                                        FROM `trainers`
+                                        INNER JOIN `manufacturer`
+                                        ON `trainers`.`manufacturer_id` = `manufacturer`.`id`
+                                        INNER JOIN `colour`
+                                        ON `trainers`.`colour_id` = `colour`.`id`
+                                        WHERE `trainers`.`id` = :trainer_id');
+
+        $success = $query->execute([
+        ':trainer_id' => $id,
+        ]);
+
+        $item = $query->fetch();
+
+            return new Trainer(
+                $item['id'], 
+                $item['name'], 
+                $item['price'],
+                $item['image'],
+                $item['manufacturer'],
+                $item['deleted'],
+                $item['description'],
+                $item['colour']
+            );
+        
+    }
+
+
+    public function deleteTrainer($id) {
+        $sql = 'DELETE FROM trainers
+                WHERE id = :trainer_id';
+        
+        $query = $this->db->prepare($sql);
+        
+        return $query->execute([':trainer_id' => $id]);
+    }
 }
 
 

@@ -4,17 +4,23 @@ require_once 'src/Trainers.php';
 require_once 'src/TrainersModel.php';
 require_once 'src/TrainerViewHelper.php';
 
+
 if(
     isset($_POST['name']) &&
     isset($_POST['image']) &&
     isset($_POST['price']) &&
-    isset($_POST['manufacturer_id'])
+    isset($_POST['manufacturer_id']) &&
+    isset($_POST['description']) &&
+    isset($_POST['colour_id'])
+    
+ 
 ){
     $name = $_POST['name'];
     $image = $_POST['image'];
     $price = $_POST['price'];
     $manufacturer_id = $_POST['manufacturer_id'];
-    
+    $description = $_POST['description'];
+    $colour_id = $_POST['colour_id'];
     
     $name_valid = true;
     $image_valid = true;
@@ -28,17 +34,18 @@ if(
          
       $query = $db->prepare(
         'INSERT INTO `trainers`
-            (`name`, `image`, `price`, `manufacturer_id`)
-            VALUES (:trainer_name, :trainer_image, :trainer_price, :manufacturer_id);');
+            (`name`, `image`, `price`, `manufacturer_id`, `description`, `colour_id`)
+            VALUES (:trainer_name, :trainer_image, :trainer_price, :manufacturer_id, :trainer_desc, :colour_id);');
     
       $success = $query->execute([
         ':trainer_name' => $name,
         ':trainer_image' => $image,
         ':trainer_price' => $price,
         ':manufacturer_id' => $manufacturer_id,
-      ]);
-      
+        ':trainer_desc' => $description,
+        ':colour_id' => $colour_id
 
+      ]);
       }   
 
     if(empty($_POST['name']) || (strlen($_POST['name']) > 100))
@@ -68,16 +75,15 @@ if(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Shoe Stack</title>
 </head>
-    <header> 
-    <div class="navigation">
-            <span><img src="images/Shoe_Stack.png"></img></span>
+<header> <!-- Header Div -->
+        <div class="navigation">
+            <a href="index.php"><img src="images/Shoe_Stack.png"></img></a>
             <nav class="links">
-                <a href="index.php" class="second" alt="About">Trainers</a>
-                <a href="AddTrainers.php" class="third" alt="Portfolio">Add Trainers</a>
-                <a href="#" id="contactModal" class="fourth" alt="Contact">Search</a>
+                <a class="bg-amber-500 shadow-lg cursor-pointer px-2 py-1 rounded hover:bg-black hover:text-white" href="AddTrainers.php" alt="Add Trainers"><p>+ ADD</p></a>
             </nav>
         </div>
     </header>
@@ -104,7 +110,7 @@ if(
        <div class="sm:col-span-3">
           <label for="manufacturer_id" class="block text-sm font-medium leading-6 text-gray-900">Brand</label>
           <div class="mt-2">
-            <select id="manufacturer_id" name="manufacturer_id" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+            <select id="manufacturer_id" name="manufacturer_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                 <option value ="1">Addidas</option>
                 <option value ="2">Converse</option>
                 <option value ="3">Nike</option>
@@ -115,11 +121,24 @@ if(
             </select>
           </div>
         </div>
+        <div class="sm:col-span-3">
+          <label for="colour_id" class="block text-sm font-medium leading-6 text-gray-900">Primary Colour</label>
+          <div class="mt-2">
+            <select id="colour_id" name="colour_id" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                <option value ="1">White</option>
+                <option value ="2">Black</option>
+                <option value ="3">Grey</option>
+                <option value ="4">Beige</option>
+                <option value ="5">Blue</option>
+                <option value ="6">Red</option>
+            </select>
+          </div>
+        </div>
 
         <div class="sm:col-span-3">
           <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Image<span class="note">*</span></label>
           <div class="mt-2">
-            <input type="text" name="image" id="imagee" autocomplete="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            <input type="text" name="image" id="image" autocomplete="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             <?php
             if (isset ($image_message)) {
                 echo "<p class='note'>".$image_message."</p>";
@@ -127,10 +146,18 @@ if(
         </div>
         </div>
 
-        <div class="sm:col-span-4">
+        <div class="col-span-full">
+          <label for="description" class="block text-sm font-medium leading-6 text-gray-900">Description</label>
+          <div class="mt-2">
+            <textarea id="description" name="description" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></textarea>
+          </div>
+          <p class="mt-3 text-sm leading-6 text-gray-600">Write a few sentences about your trainers.</p>
+        </div>
+
+        <div class="sm:col-span-3">
           <label for="price" class="block text-sm font-medium leading-6 text-gray-900">Price<span class="note">*</span></label>
           <div class="mt-2">
-            <input id="price" name="price" type="number" autocomplete="price" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            <input id="price" name="price" type="text" autocomplete="price" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             <?php
             if (isset ($price_message)) {
                 echo "<p class='note'>".$price_message."</p>";
@@ -140,17 +167,6 @@ if(
                 }?>
         </div>
         </div>
-
-        <!-- <div class="sm:col-span-3">
-          <label for="country" class="block text-sm font-medium leading-6 text-gray-900">Country</label>
-          <div class="mt-2">
-            <select id="country" name="country" autocomplete="country-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-              <option>United States</option>
-              <option>Canada</option>
-              <option>Mexico</option>
-            </select>
-          </div>
-        </div> -->
 
   <div class="mt-6 flex items-center justify-end gap-x-6">
     <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
@@ -162,6 +178,21 @@ if(
 </div>
 
 </div>
+
+<footer class="footer"> 
+        <div class="footertop">
+            <span class ="logo">{mb.creative}</span>
+            <a href="#" class="contact">Contact</a>
+            <span class="social">
+                <a class="#"></a>
+                <a class="#"></a>
+            </span>
+        </div>
+        
+        <div class="footerbottom">
+            <p> © Copyright 2023</p>
+        </div>
+    </footer>
 </body>
 </html>
 

@@ -1,17 +1,32 @@
 <?php
 
+require_once 'src/Trainers.php';
 require_once 'src/TrainersModel.php';
 require_once 'src/TrainerViewHelper.php';
-
 
 $db = new PDO('mysql:host=db; dbname=Shoe_Stack', 'root', 'password');
 $db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
-// Instatiate a new ItemsModel and pass the database property into it
+if (isset($_GET['get_id'])){
+    $id = $_GET['get_id'];
+} else {
+    header('Location: index.php');
+}
+
+if (isset($_POST['id_to_delete'])){
+
+    $trainersModel = new TrainersModel($db);
+
+    $deleted = $trainersModel->deleteTrainer($_POST['id_to_delete']);
+    header('Location: index.php');
+} 
+
+
+
+
 $itemsModel = new TrainersModel($db);
 
-// apply the GetAllItems method declared in the file to the property declared above, which contains a new instance of the ItemsModel class
-$items = $itemsModel->getAllItems();
+$items = $itemsModel->getSingleItems($id);
 
 ?>
 
@@ -35,16 +50,19 @@ $items = $itemsModel->getAllItems();
     </header>
 <body>
 
-<div class = "placeholder">
+<div class = "placeholder2">
 <?php 
 
-echo TrainerViewHelper::displayAllItems($items);
+echo TrainerViewHelper::displaySingleItem($items);
 
 ?>
+
 </div>
+<div>
 <footer class="footer"> 
         <div class="footertop">
-            <a class =" footerimage" href="index.php"><img src="images/Shoe_Stack.png"></img></a>
+            <span class ="logo">{mb.creative}</span>
+            <a href="#" class="contact">Contact</a>
             <span class="social">
                 <a class="#"></a>
                 <a class="#"></a>
@@ -55,8 +73,6 @@ echo TrainerViewHelper::displayAllItems($items);
             <p> © Copyright 2023</p>
         </div>
     </footer>
+</div>
 </body>
 </html>
-
-
-
